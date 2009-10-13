@@ -7,8 +7,12 @@
 (defn show-main-page []
   "Hello World!")
 
+(defn page-not-found []
+  [404 "The page you requested does not exist."])
+
 (defroutes main-routes
-  (GET "/" (show-main-page)))
+  (GET "/" (show-main-page))
+  (ANY "/*" (page-not-found)))
 
 (def server
      (run-server {:port 8080}
