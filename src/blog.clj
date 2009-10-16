@@ -14,7 +14,7 @@
                :title "Second post"
                :body  "Already I'm out of things to say."}))
 
-(defn page-template [title body &]
+(defn page-template [title & body]
   (html [:html
          [:head [:title (str site-title ": " title)]]
          [:body
