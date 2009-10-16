@@ -1,7 +1,7 @@
 (ns blog
+  (:gen-class :extends javax.servlet.http.HttpServlet)
   (:use compojure.http.routes)
   (:use compojure.http.servlet)
-  (:use compojure.server.jetty)
   (:use compojure.html))
 
 (defn show-main-page []
@@ -14,6 +14,5 @@
   (GET "/" (show-main-page))
   (ANY "/*" (page-not-found)))
 
-(def server
-     (run-server {:port 8080}
-                 "/*" (servlet main-routes)))
+(defservice main-routes)
+
