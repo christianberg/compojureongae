@@ -7,12 +7,12 @@
 (def site-title "Compojure on GAE - Example Blog")
 
 (def posts (sorted-map 
-            1 {:id 1
-               :title "Hello World!"
-               :body  "This is my first post. Welcome to my example blog."}
-            2 {:id 2
-               :title "Second post"
-               :body  "Already I'm out of things to say."}))
+            "1" {:id "1"
+                 :title "Hello World!"
+                 :body  "This is my first post. Welcome to my example blog."}
+            "2" {:id "2"
+                 :title "Second post"
+                 :body  "Already I'm out of things to say."}))
 
 (defn page-template [title & body]
   (html [:html
@@ -23,18 +23,25 @@
           [:div.footer "&copy; 2009 Christian Berg"]]]))
 
 (defn display-post [post]
-  [:div [:h2.post-header (post :title)]
+  [:div (link-to (str "/" (post :id)) [:h2.post-header (post :title)])
    [:p.post-body (post :body)]])
 
 (defn show-main-page []
   (page-template "Home"
-                 (map (comp display-post val) posts)))
+    (map (comp display-post val) posts)))
+
+(defn show-post-page [id]
+  (if-let [post (posts id)]
+    (page-template (post :title)
+      (display-post post))
+    :next))
 
 (defn page-not-found []
   [404 (page-template "Page not found" [:p "The page you requested does not exist."] [:p (link-to "/" "Return to main page.")])])
 
 (defroutes main-routes
   (GET "/" (show-main-page))
+  (GET "/:id" (show-post-page (params :id)))
   (ANY "/*" (page-not-found)))
 
 (defservice main-routes)
