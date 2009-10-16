@@ -31,7 +31,7 @@
                  (map (comp display-post val) posts)))
 
 (defn page-not-found []
-  [404 "The page you requested does not exist."])
+  [404 (page-template "Page not found" [:p "The page you requested does not exist."] [:p (link-to "/" "Return to main page.")])])
 
 (defroutes main-routes
   (GET "/" (show-main-page))
