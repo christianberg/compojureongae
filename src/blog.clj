@@ -6,11 +6,13 @@
 
 (def site-title "Compojure on GAE - Example Blog")
 
-(def posts [
-            {:title "Hello World!"
-             :body  "This is my first post. Welcome to my example blog."}
-            {:title "Second post"
-             :body  "Already I'm out of things to say."}])
+(def posts (sorted-map 
+            1 {:id 1
+               :title "Hello World!"
+               :body  "This is my first post. Welcome to my example blog."}
+            2 {:id 2
+               :title "Second post"
+               :body  "Already I'm out of things to say."}))
 
 (defn page-template [title body &]
   (html [:html
@@ -26,7 +28,7 @@
 
 (defn show-main-page []
   (page-template "Home"
-                 (map display-post posts)))
+                 (map (comp display-post val) posts)))
 
 (defn page-not-found []
   [404 "The page you requested does not exist."])
