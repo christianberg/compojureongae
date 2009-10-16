@@ -4,8 +4,29 @@
   (:use compojure.http.servlet)
   (:use compojure.html))
 
+(def site-title "Compojure on GAE - Example Blog")
+
+(def posts [
+            {:title "Hello World!"
+             :body  "This is my first post. Welcome to my example blog."}
+            {:title "Second post"
+             :body  "Already I'm out of things to say."}])
+
+(defn page-template [title body &]
+  (html [:html
+         [:head [:title (str site-title ": " title)]]
+         [:body
+          [:div.header [:h1 site-title]]
+          [:div.content body]
+          [:div.footer "&copy; 2009 Christian Berg"]]]))
+
+(defn display-post [post]
+  [:div [:h2.post-header (post :title)]
+   [:p.post-body (post :body)]])
+
 (defn show-main-page []
-  "Hello World!")
+  (page-template "Home"
+                 (map display-post posts)))
 
 (defn page-not-found []
   [404 "The page you requested does not exist."])
