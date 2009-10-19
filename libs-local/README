@@ -1,0 +1,4 @@
+These libraries will not be deployed with the war file, but are needed when running the app locally in Jetty.
+
+Note: I use symlinks for all dependencies, so you don't get the actual files when you check out the git repository.
+Either put the actual files in the right directories (where the symlinks point) or copy them here.
