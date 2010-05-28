@@ -1,11 +1,87 @@
 (ns compojureongae.core
   (:gen-class :extends javax.servlet.http.HttpServlet)
   (:use compojure.core
-        ring.util.servlet)
+        [ring.util servlet response]
+        [hiccup core form-helpers page-helpers]
+        appengine.datastore.core)
+  (:import (com.google.appengine.api.datastore Query))
   (:require [compojure.route :as route]))
 
+;; A static HTML side bar containing some internal and external links
+(def side-bar
+     [:div#sidebar
+      [:h3 "Navigation"]
+      [:ul
+       [:li (link-to "/" "Main page")]
+       [:li (link-to "/new" "Create new post (Admin only)")]]
+      [:h3 "External Links"]
+      [:ul
+       [:li (link-to "http://compojureongae.posterous.com/" "Blog")]
+       [:li (link-to "http://github.com/christianberg/compojureongae" "Source Code")]]])
+
+(defn google-analytics [code]
+  "Returns the script tag for injecting Google Analytics site visitor tracking."
+  [:script {:type "text/javascript"} (str "
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', '" code "']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();")])
+
+(defn render-page [title & body]
+  "Renders HTML around a given payload, acts as a template for all pages."
+  (html [:html
+         [:head
+          [:title title]
+          (include-css "/css/main.css")]
+         [:body
+          (google-analytics "UA-16545358-1")
+          [:h1 title]
+          [:div#main body]
+          side-bar]]))
+
+(defn new-form []
+  "Displays an HTML form for entering a new post."
+  (form-to [:post "/post"]
+           [:fieldset
+            [:legend "Create a new post"]
+            [:ol
+             [:li
+              [:label {:for :title} "Title"]
+              (text-field :title)]
+             [:li
+              [:label {:for :body} "Body"]
+              (text-area :body)]]
+            [:button {:type "submit"} "Post!"]]))
+
+(defn create-post [title body]
+  "Stores a new post in the datastore and issues an HTTP Redirect to the main page."
+  (create-entity {:kind "post" :title title :body body})
+  (redirect "/"))
+
+(defn render-post [post]
+  "Renders a post to HTML."
+  [:div
+   [:h2 (h (:title post))]
+   [:p (h (:body post))]])
+
+(defn get-posts []
+  "Returns all posts stored in the datastore."
+  (find-all (Query. "post")))
+
+(defn main-page []
+  "Renders the main page by displaying all posts."
+  (render-page "Compojure on GAE"
+    (map render-post (get-posts))))
+
 (defroutes example
-  (GET "/" [] "<h1>Hello World Wide Web!</h1>")
+  (GET "/" [] (main-page))
+  (GET "/new" [] (render-page "New Post" (new-form)))
+  (POST "/post" [title body] (create-post title body))
   (route/not-found "Page not found"))
 
 (defservice example)

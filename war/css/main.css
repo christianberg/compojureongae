@@ -1,0 +1,105 @@
+body {
+    font: 62.5% "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+    padding: 10px 30px;
+}
+ol, ul, p {
+    font-size: 1.2em;
+    line-height: 1.5;
+}
+form, fieldset, legend {
+    border: 0;
+    padding: 0;
+    margin: 0;
+}
+legend {
+    font-size: 2em;
+    line-height: 1.8;
+    padding-bottom: .5em;
+}
+h1, h2, h3 {
+    font-weight: normal;
+}
+h1 {
+    font-size: 3em;
+}
+h2 {
+    font-size: 2em;
+}
+p {
+    margin-left: 20px;
+}
+form ol, form ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+form li {
+    clear: both;
+    margin: 0 0 .75em;
+    padding: 0;
+}
+label {
+    display: block;
+    float: left;
+    line-height: 1.6;
+    margin-right: 10px;
+    text-align: right;
+    width: 120px;
+}
+label:after {
+    content: ':';
+}
+input, textarea {
+    font: 1em Arial, Helvetica, sans-serif;
+    padding: 1px 3px;
+    width: 250px;
+}
+textarea {
+    line-height: 1.3em;
+    padding: 0 4px;
+}
+button {
+    background: #ffd100;
+    border: 2px outset #333;
+    color: #333;
+    cursor: pointer;
+    font-size: .9em;
+    font-weight: bold;
+    letter-spacing: .3em;
+    margin-left: 130px;
+    padding: .2em .5em;
+    text-transform: uppercase;
+}
+#main {
+    float: left;
+}
+#sidebar {
+    background: #eee;
+    float: right;
+
+    width: 200px;
+}
+#sidebar ol, #sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+#sidebar li {
+    padding: 2px 10px;
+}
+#sidebar li:hover {
+    background: #ccf;
+}
+#sidebar h3 {
+    font-weight: bold;
+    background: #ffd100;
+    padding: 2px 10px;
+    margin: 0;
+}
+a {
+    text-decoration: none;
+    color: #000;
+}
+a:hover {
+    text-decoration: underline;
+}
