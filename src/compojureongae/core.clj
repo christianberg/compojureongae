@@ -1,11 +1,14 @@
 (ns compojureongae.core
   (:gen-class :extends javax.servlet.http.HttpServlet)
   (:use compojure.core
-        [ring.util servlet response]
-        [hiccup core form-helpers page-helpers]
-        appengine.datastore.core)
+        [ring.util.servlet   :only [defservice]]
+        [ring.util.response  :only [redirect]]
+        [hiccup.core         :only [h html]]
+        [hiccup.page-helpers :only [doctype include-css link-to xhtml-tag]]
+        [hiccup.form-helpers :only [form-to text-area text-field]])
   (:import (com.google.appengine.api.datastore Query))
-  (:require [compojure.route :as route]))
+  (:require [compojure.route          :as route]
+            [appengine.datastore.core :as ds]))
 
 ;; A static HTML side bar containing some internal and external links
 (def side-bar
@@ -62,7 +65,7 @@
 
 (defn create-post [title body]
   "Stores a new post in the datastore and issues an HTTP Redirect to the main page."
-  (create-entity {:kind "post" :title title :body body})
+  (ds/create-entity {:kind "post" :title title :body body})
   (redirect "/"))
 
 (defn render-post [post]
@@ -73,7 +76,7 @@
 
 (defn get-posts []
   "Returns all posts stored in the datastore."
-  (find-all (Query. "post")))
+  (ds/find-all (Query. "post")))
 
 (defn main-page []
   "Renders the main page by displaying all posts."
