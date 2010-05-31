@@ -34,15 +34,17 @@
 
 (defn render-page [title & body]
   "Renders HTML around a given payload, acts as a template for all pages."
-  (html [:html
-         [:head
-          [:title title]
-          (include-css "/css/main.css")]
-         [:body
-          (google-analytics "UA-16545358-1")
-          [:h1 title]
-          [:div#main body]
-          side-bar]]))
+  (html
+   (doctype :xhtml-strict)
+   (xhtml-tag "en"
+                   [:head
+                    [:title title]
+                    (include-css "/css/main.css")]
+                   [:body
+                    (google-analytics "UA-16545358-1")
+                    [:h1 title]
+                    [:div#main body]
+                    side-bar])))
 
 (defn new-form []
   "Displays an HTML form for entering a new post."
