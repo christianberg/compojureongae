@@ -1,4 +1,4 @@
-(defproject compojureongae "0.2.0-SNAPSHOT"
+(defproject compojureongae "0.2.0"
   :description "Example app for deployoing Compojure on Google App Engine"
   :namespaces [compojureongae.core]
   :dependencies [[compojure "0.4.0-RC3"]
