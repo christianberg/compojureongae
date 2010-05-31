@@ -49,19 +49,19 @@
                     [:div#main body]
                     side-bar])))
 
-(defn new-form []
-  "Displays an HTML form for entering a new post."
-  (form-to [:post "/post"]
-           [:fieldset
-            [:legend "Create a new post"]
-            [:ol
-             [:li
-              [:label {:for :title} "Title"]
-              (text-field :title)]
-             [:li
-              [:label {:for :body} "Body"]
-              (text-area :body)]]
-            [:button {:type "submit"} "Post!"]]))
+;;; A static HTML form for entering a new post.
+(def new-form
+     (form-to [:post "/post"]
+              [:fieldset
+               [:legend "Create a new post"]
+               [:ol
+                [:li
+                 [:label {:for :title} "Title"]
+                 (text-field :title)]
+                [:li
+                 [:label {:for :body} "Body"]
+                 (text-area :body)]]
+               [:button {:type "submit"} "Post!"]]))
 
 (defn create-post [title body]
   "Stores a new post in the datastore and issues an HTTP Redirect to the main page."
@@ -85,7 +85,7 @@
 
 (defroutes example
   (GET "/" [] (main-page))
-  (GET "/new" [] (render-page "New Post" (new-form)))
+  (GET "/new" [] (render-page "New Post" new-form))
   (POST "/post" [title body] (create-post title body))
   (route/not-found "Page not found"))
 
