@@ -72,11 +72,11 @@ button {
 }
 #main {
     float: left;
+    width: 600px;
 }
 #sidebar {
     background: #eee;
     float: right;
-
     width: 200px;
 }
 #sidebar ol, #sidebar ul {
