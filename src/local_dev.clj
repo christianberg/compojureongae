@@ -1,16 +1,13 @@
 (ns local-dev
   "Tools for local development.
    Enables the use of the App Engine APIs on the REPL and in a local Jetty instance."
-  (:use 
-        ring.adapter.jetty
+  (:use ring.adapter.jetty
         [ring.middleware file file-info])
   (:import [java.io File]
-           [com.google.apphosting.api ApiProxy ApiProxy$Environment]
            [java.util HashMap]
+           [com.google.apphosting.api ApiProxy ApiProxy$Environment]
            [com.google.appengine.tools.development
             ApiProxyLocalFactory
-            ApiProxyLocalImpl
-            LocalServiceContext
             LocalServerEnvironment]))
 
 (defonce *server* (atom nil))
