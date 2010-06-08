@@ -12,16 +12,27 @@
             [appengine.users          :as users]))
 
 ;; A static HTML side bar containing some internal and external links
-(def side-bar
-     [:div#sidebar
-      [:h3 "Navigation"]
-      [:ul
-       [:li (link-to "/" "Main page")]
-       [:li (link-to "/admin/new" "Create new post (Admin only)")]]
-      [:h3 "External Links"]
-      [:ul
-       [:li (link-to "http://compojureongae.posterous.com/" "Blog")]
-       [:li (link-to "http://github.com/christianberg/compojureongae" "Source Code")]]])
+(defn side-bar []
+  (let [ui (users/user-info)]
+    [:div#sidebar
+     [:h3 "Current User"]
+     (if-let [user (:user ui)]
+       [:ul
+        [:li "Logged in as " (.getEmail user)]
+        [:li (link-to (.createLogoutURL (:user-service ui) "/") "Logout")]]
+       [:ul
+        [:li "Not logged in"]
+        [:li (link-to (.createLoginURL (:user-service ui) "/") "Login")]]
+       )
+     [:h3 "Navigation"]
+     [:ul
+      [:li (link-to "/" "Main page")]
+      (if (and (.isUserLoggedIn (:user-service ui)) (.isUserAdmin (:user-service ui)))
+        [:li (link-to "/admin/new" "Create new post (Admin only)")])]
+     [:h3 "External Links"]
+     [:ul
+      [:li (link-to "http://compojureongae.posterous.com/" "Blog")]
+      [:li (link-to "http://github.com/christianberg/compojureongae" "Source Code")]]]))
 
 (defn google-analytics [code]
   "Returns the script tag for injecting Google Analytics site visitor tracking."
@@ -48,7 +59,7 @@
                     (google-analytics "UA-16545358-1")
                     [:h1 title]
                     [:div#main body]
-                    side-bar])))
+                    (side-bar)])))
 
 ;;; A static HTML form for entering a new post.
 (def new-form
