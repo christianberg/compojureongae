@@ -8,7 +8,8 @@
         [hiccup.form-helpers :only [form-to text-area text-field]])
   (:import (com.google.appengine.api.datastore Query))
   (:require [compojure.route          :as route]
-            [appengine.datastore.core :as ds]))
+            [appengine.datastore.core :as ds]
+            [appengine.users          :as users]))
 
 ;; A static HTML side bar containing some internal and external links
 (def side-bar
@@ -16,7 +17,7 @@
       [:h3 "Navigation"]
       [:ul
        [:li (link-to "/" "Main page")]
-       [:li (link-to "/new" "Create new post (Admin only)")]]
+       [:li (link-to "/admin/new" "Create new post (Admin only)")]]
       [:h3 "External Links"]
       [:ul
        [:li (link-to "http://compojureongae.posterous.com/" "Blog")]
@@ -51,7 +52,7 @@
 
 ;;; A static HTML form for entering a new post.
 (def new-form
-     (form-to [:post "/post"]
+     (form-to [:post "/admin/post"]
               [:fieldset
                [:legend "Create a new post"]
                [:ol
@@ -83,10 +84,28 @@
   (render-page "Compojure on GAE"
     (map render-post (get-posts))))
 
+(defroutes public-routes
+  (GET "/" [] (main-page)))
+
+(defroutes admin-routes
+  (GET  "/admin/new"  [] (render-page "New Post" new-form))
+  (POST "/admin/post" [title body] (create-post title body)))
+
+(defn wrap-requiring-admin [application]
+  (fn [request]
+    (let [{:keys [user-service]} (users/user-info request)]
+      (if (.isUserAdmin user-service)
+        (application request)
+        {:status 403 :body "Access denied. You must be logged in as admin user!"}))))
+
+(wrap! admin-routes
+       wrap-requiring-admin
+       users/wrap-requiring-login
+       users/wrap-with-user-info)
+
 (defroutes example
-  (GET "/" [] (main-page))
-  (GET "/new" [] (render-page "New Post" new-form))
-  (POST "/post" [title body] (create-post title body))
+  public-routes
+  (ANY "/admin/*" request admin-routes)
   (route/not-found "Page not found"))
 
 (defservice example)

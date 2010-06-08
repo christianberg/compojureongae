@@ -16,13 +16,4 @@
     <url-pattern>/</url-pattern>
   </servlet-mapping>
 
-  <security-constraint>
-    <web-resource-collection>
-      <url-pattern>/new</url-pattern>
-      <url-pattern>/post</url-pattern>
-    </web-resource-collection>
-    <auth-constraint>
-      <role-name>admin</role-name>
-    </auth-constraint>
-  </security-constraint>
 </web-app>
