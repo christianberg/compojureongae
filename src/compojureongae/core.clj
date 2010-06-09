@@ -27,7 +27,7 @@
      [:h3 "Navigation"]
      [:ul
       [:li (link-to "/" "Main page")]
-      (if (and (.isUserLoggedIn (:user-service ui)) (.isUserAdmin (:user-service ui)))
+      (if (and (:user ui) (.isUserAdmin (:user-service ui)))
         [:li (link-to "/admin/new" "Create new post (Admin only)")])]
      [:h3 "External Links"]
      [:ul
