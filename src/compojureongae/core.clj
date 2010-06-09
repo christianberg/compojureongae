@@ -116,7 +116,7 @@
 
 (defroutes example
   public-routes
-  (ANY "/admin/*" request admin-routes)
+  (ANY "/admin/*" [] admin-routes)
   (route/not-found "Page not found"))
 
 (defservice example)
