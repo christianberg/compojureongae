@@ -11,5 +11,6 @@
                      [ring/ring-jetty-adapter "0.2.0"]
                      [com.google.appengine/appengine-local-runtime "1.3.4"]
                      [com.google.appengine/appengine-api-stubs "1.3.4"]]
+  :repositories [["maven-gae-plugin" "http://maven-gae-plugin.googlecode.com/svn/repository"]]
   :compile-path "war/WEB-INF/classes"
   :library-path "war/WEB-INF/lib")
