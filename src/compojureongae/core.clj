@@ -54,9 +54,9 @@
    (xhtml-tag "en"
                    [:head
                     [:title title]
-                    (include-css "/css/main.css")]
+                    (include-css "/css/main.css")
+                    (google-analytics "UA-16545358-1")]
                    [:body
-                    (google-analytics "UA-16545358-1")
                     [:h1 title]
                     [:div#main body]
                     (side-bar)])))
