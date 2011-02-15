@@ -3,11 +3,11 @@
 #
 #destination: ./_site
 auto:        false
-lsi:         true # better related posts
-server_port: 4000
-pygments:    false
+lsi:         false # better related posts
+server_port: 8080
+pygments:    true
 markdown:    maruku
-permalink:   none
+#permalink:   none
 maruku:
   use_tex:    false
   use_divs:   false
@@ -17,7 +17,7 @@ maruku:
 #
 # Site configuration
 #
-url:          http://christianberg.github.com/compojureongae/
+url:          http://localhost:8080/
 title:        Compojure on GAE
 description:  Deploying a Clojure web app to Google App Engine
 keywords:     clojure, compojure, ring, app engine, gae
